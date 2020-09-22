@@ -1,4 +1,4 @@
-public class Employee {
+public class Employee implements Comparable{
     private String name;
     private double hours;
     private Position position;
@@ -41,5 +41,17 @@ public class Employee {
 
     public void setPosition(Position position) {
         this.position = position;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if(((Employee) o).getHours() > this.hours){
+            return 0;
+        }
+        return 1;
+    }
+
+    public void incrementHours(int hours) {
+        this.hours += hours;
     }
 }

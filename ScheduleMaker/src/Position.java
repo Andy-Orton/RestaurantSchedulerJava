@@ -1,3 +1,3 @@
-public class Position {
-    private String positionName;
+public enum Position{
+    COOK,MANAGER,DISHWASHER,SERVER
 }

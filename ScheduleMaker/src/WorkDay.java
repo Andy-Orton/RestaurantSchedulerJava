@@ -1,16 +1,17 @@
+import java.time.LocalDate;
 import java.util.List;
 
-public class WorkDays {
-    private String day;
+public class WorkDay {
+    private LocalDate day;
     private List<Shift> shifts;
 
 
-    public WorkDays(String day, List<Shift> shifts) {
+    public WorkDay(LocalDate day, List<Shift> shifts) {
         this.day = day;
         this.shifts = shifts;
     }
 
-    public String getDay() {
+    public LocalDate getDay() {
         return day;
     }
 
