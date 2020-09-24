@@ -1,4 +1,6 @@
-public class Employee implements Comparable{
+import static java.lang.Math.abs;
+
+public class Employee{
     private String name;
     private double hours;
     private Position position;
@@ -44,14 +46,12 @@ public class Employee implements Comparable{
     }
 
     @Override
-    public int compareTo(Object o) {
-        if(((Employee) o).getHours() > this.hours){
-            return 0;
-        }
-        return 1;
+    public String toString() {
+        return this.name + ": " + this.hours;
     }
 
     public void incrementHours(int hours) {
+        hours = abs(hours);
         this.hours += hours;
     }
 }

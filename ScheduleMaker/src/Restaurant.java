@@ -16,8 +16,14 @@ public class Restaurant {
         LocalTime StartingTime = LocalTime.of(9, 0, 0);
         LocalTime ClosingTime = LocalTime.of(22, 0, 0);
         setStartingData(StartingTime, ClosingTime);
-        for(int i = 0; i < employeeList.size(); i++){
-            System.out.println(employeeList.get(i).getName() +" " + employeeList.get(i).getHours());
+    }
+
+    private void displaySchedule() {
+        for(int i = 0; i < schedule.days.size(); i++){
+            for(int j = 0; j < schedule.days.get(i).getShifts().size(); j++){
+                System.out.print(i + ":");
+                System.out.println(schedule.days.get(i).getShifts().get(j).getStartTime() + " : "  + schedule.days.get(i).getShifts().get(j).getEmployee().getName() + " : " + schedule.days.get(i).getShifts().get(j).getPosition());
+            }
         }
     }
 
@@ -25,10 +31,10 @@ public class Restaurant {
         Shift startingCook = new Shift(startingTime, LocalTime.of(3, 0, 0), Position.COOK);
         Shift startingServer = new Shift(startingTime, LocalTime.of(3, 0, 0), Position.SERVER);
         Shift startingManager = new Shift(startingTime, LocalTime.of(3, 0, 0), Position.MANAGER);
-        Shift endingCook = new Shift(LocalTime.of(3, 0, 0), closingTime, Position.COOK);
-        Shift endingServer = new Shift(LocalTime.of(3, 0, 0), closingTime, Position.SERVER);
-        Shift endingManager = new Shift(LocalTime.of(3, 0, 0), closingTime, Position.MANAGER);
-        Shift endingDish = new Shift(LocalTime.of(3, 0, 0), closingTime, Position.DISHWASHER);
+        Shift endingCook = new Shift(LocalTime.of(15, 0, 0), closingTime, Position.COOK);
+        Shift endingServer = new Shift(LocalTime.of(15, 0, 0), closingTime, Position.SERVER);
+        Shift endingManager = new Shift(LocalTime.of(15, 0, 0), closingTime, Position.MANAGER);
+        Shift endingDish = new Shift(LocalTime.of(15, 0, 0), closingTime, Position.DISHWASHER);
         standardWeekDayShifts.add(startingCook);
         standardWeekDayShifts.add(startingCook);
         standardWeekDayShifts.add(startingServer);
@@ -77,6 +83,7 @@ public class Restaurant {
     public void createSchedule(){
         schedule = new Schedule(LocalDate.now(), standardWeekDayShifts, standardWeekendShifts);
         fillSchedule();
+        displaySchedule();
     }
 
     public Schedule getSchedule(){
@@ -87,13 +94,26 @@ public class Restaurant {
         for(int i = 0; i < schedule.days.size(); i++){
             for(int s = 0; s < schedule.days.get(i).getShifts().size(); s++){
                 List<Employee> possibleEmployees = GetEmployeeByType(employeeList, schedule.days.get(i).getShifts().get(s).getPosition());
-                Collections.sort(possibleEmployees);
+                sortEmployees(possibleEmployees);
                 schedule.days.get(i).getShifts().get(s).assignEmployee(possibleEmployees.get(0));
             }
         }
     }
 
-
+    private void sortEmployees(List<Employee> possibleEmployees) {
+        int i, j, min_idx;
+        for(i = 0; i < possibleEmployees.size(); i++){
+            min_idx = i;
+            for(j = i+1; j < possibleEmployees.size(); j++){
+                if(possibleEmployees.get(j).getHours() < possibleEmployees.get(min_idx).getHours()){
+                    min_idx = j;
+                }
+            }
+            Employee temp = possibleEmployees.get(min_idx);
+            possibleEmployees.set(min_idx, possibleEmployees.get(i));
+            possibleEmployees.set(i, temp);
+        }
+    }
 
 
     private List<Employee> GetEmployeeByType(List<Employee> employeeList, Position position) {
