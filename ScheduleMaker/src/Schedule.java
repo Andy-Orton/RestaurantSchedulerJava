@@ -6,13 +6,10 @@ public class Schedule {
     public LocalDate startDay;
     public LocalDate endDay;
     public List<WorkDay> days;
-    public Schedule(LocalDate c, List<Shift> weekday, List<Shift> weekend){
+    public Schedule(LocalDate startDay, LocalDate endDay, List<Shift> weekday, List<Shift> weekend){
         days = new LinkedList<>();
-        while (c.getDayOfWeek().toString() != "MONDAY"){
-            c = c.plusDays(1);
-        }
-        startDay = c;
-        endDay = c.plusDays(6);
+        this.startDay = startDay;
+        this.endDay = endDay;
         for(int i = 0; i < startDay.datesUntil(endDay).count(); i++){
             if(isWeekday(startDay.plusDays(i))){
               WorkDay w = new WorkDay(startDay.plusDays(i), weekday);
